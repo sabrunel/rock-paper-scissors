@@ -1,10 +1,81 @@
 const ROCK = "ROCK";
 const PAPER = "PAPER";
 const SCISSORS = "SCISSORS";
+const MAX_SCORE = 5;
+
+const rockBtn = document.getElementById("rock-btn");
+const paperBtn = document.getElementById("paper-btn");
+const scissorsBtn = document.getElementById("scissors-btn");
+const resetBtn = document.getElementById("reset");
+const endModal = document.getElementById("end-modal");
+const roundOutcomeTxt = document.getElementById("round-outcome-txt");
+const playerScoreTxt = document.getElementById("player-score");
+const computerScoreTxt = document.getElementById("computer-score");
+const playerSelectionTxt = document.getElementById("player-selection");
+const computerSelectionTxt = document.getElementById("computer-selection");
+const gameOutcomeTxt = document.getElementById("game-outcome-txt");
+
+let playerScore = 0;
+let computerScore = 0;
+
+function showEndModal(gameOutcome) {
+    endModal.style.display = "block";
+    switch (gameOutcome) {
+        case 1:
+            gameOutcomeTxt.textContent = "You win the game";
+            break;
+        case -1:
+            gameOutcomeTxt.textContent = "You lose the game";
+            break;    
+    }
+}
+
+function updateUI(
+    playerSelection = "",
+    computerSelection = "",
+    roundOutcome = ""
+    ) {
+        switch (roundOutcome) {
+            case 0:
+                roundOutcomeTxt.textContent = "It's a tie";
+                break;
+            case 1:
+                roundOutcomeTxt.textContent = "You win this round";
+                break;
+            case -1:
+                roundOutcomeTxt.textContent = "You lose this round";
+                break;
+            case "":
+                roundOutcomeTxt.textContent = "";
+                break;
+        }
+    playerScoreTxt.textContent = playerScore;
+    computerScoreTxt.textContent = computerScore;
+    playerSelectionTxt.textContent = playerSelection;
+    computerSelectionTxt.textContent = computerSelection;
+}
+
+
+function endRound() {
+    let gameOutcome;
+    if (playerScore === MAX_SCORE) {
+        gameOutcome = 1;
+        showEndModal(gameOutcome);
+    } else if (computerScore === MAX_SCORE) {
+        gameOutcome = -1;
+        showEndModal(gameOutcome);
+    }
+}
+
+function resetGameHandler() {
+    playerScore = 0;
+    computerScore = 0;
+    updateUI();
+    endModal.style.display = "none";
+}
 
 function getComputerChoice() {
-    const randomChoice = Math.random()
-
+    const randomChoice = Math.random();
     if (randomChoice < 0.33) {
         return ROCK;
     } else if (randomChoice < 0.67) {
@@ -14,12 +85,8 @@ function getComputerChoice() {
     }
 }
 
-function getPlayerChoice() {
-    playerInput = prompt(`Choose between ${ROCK}, ${PAPER} or ${SCISSORS}`, '').toUpperCase();
-    return playerInput;
-}
-
-function playRound(playerSelection, computerSelection) {
+function playRoundHandler(playerSelection) {
+    const computerSelection = getComputerChoice();
     let roundOutcome;
     if (playerSelection === computerSelection) {
         roundOutcome = 0;
@@ -28,40 +95,22 @@ function playRound(playerSelection, computerSelection) {
         (playerSelection === PAPER && computerSelection === ROCK) || 
         (playerSelection === SCISSORS && computerSelection === PAPER)
         ) {
+        playerScore++;
         roundOutcome = 1;
     } else {
-        roundOutcome = -1;
+        computerScore++;
+        roundOutcome = -1; 
     }
-    return roundOutcome
+    updateUI(
+        playerSelection, 
+        computerSelection, 
+        roundOutcome
+        );
+    endRound();
 }
 
-function game() {
-    let playerWins = 0;
-    let computerWins = 0;
-    for (let i = 0; i < 5; i++) {
-        const playerChoice = getPlayerChoice();
-        console.log("You picked " + playerChoice);
-        const computerChoice = getComputerChoice();
-        console.log("Computer picked " + computerChoice);
-        roundOutcome = playRound(playerChoice,computerChoice);
 
-        if (roundOutcome > 0) {
-            playerWins++;
-            console.log("You win this round");
-        } else if (roundOutcome < 0) {
-            computerWins++;
-            console.log("Computer wins this round");
-        } else {
-            console.log("It's a tie");
-        }
-    }
-    if (playerWins > computerWins) {
-        console.log("You win the game");
-    } else if (playerWins < computerWins) {
-        console.log("The computer wins the game");
-    } else {
-        console.log("It's a draw")
-    }
-}
-
-game();
+rockBtn.addEventListener("click", playRoundHandler.bind(this, playerSelection=ROCK));
+paperBtn.addEventListener("click", playRoundHandler.bind(this, playerSelection=PAPER));
+scissorsBtn.addEventListener("click", playRoundHandler.bind(this, playerSelection=SCISSORS));
+resetBtn.addEventListener("click", resetGameHandler);
