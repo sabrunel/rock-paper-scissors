@@ -6,8 +6,9 @@ const MAX_SCORE = 5;
 const rockBtn = document.getElementById("rock-btn");
 const paperBtn = document.getElementById("paper-btn");
 const scissorsBtn = document.getElementById("scissors-btn");
-const resetBtn = document.getElementById("reset");
+const resetBtn = document.getElementById("reset-btn");
 const endModal = document.getElementById("end-modal");
+const backdrop = document.getElementById("backdrop");
 const roundOutcomeTxt = document.getElementById("round-outcome-txt");
 const playerScoreTxt = document.getElementById("player-score");
 const computerScoreTxt = document.getElementById("computer-score");
@@ -18,16 +19,21 @@ const gameOutcomeTxt = document.getElementById("game-outcome-txt");
 let playerScore = 0;
 let computerScore = 0;
 
+function toggleBackdrop() {
+    backdrop.classList.toggle("visible");
+}
+
 function showEndModal(gameOutcome) {
-    endModal.style.display = "block";
+    endModal.classList.toggle("visible");
     switch (gameOutcome) {
         case 1:
-            gameOutcomeTxt.textContent = "You win the game";
+            gameOutcomeTxt.textContent = "Congratulations, you win the game";
             break;
         case -1:
-            gameOutcomeTxt.textContent = "You lose the game";
+            gameOutcomeTxt.textContent = "Sorry, you lose the game";
             break;    
     }
+    toggleBackdrop();
 }
 
 function updateUI(
@@ -43,7 +49,7 @@ function updateUI(
                 roundOutcomeTxt.textContent = "You win this round";
                 break;
             case -1:
-                roundOutcomeTxt.textContent = "You lose this round";
+                roundOutcomeTxt.textContent = "Computer wins this round";
                 break;
             case "":
                 roundOutcomeTxt.textContent = "";
@@ -71,7 +77,8 @@ function resetGameHandler() {
     playerScore = 0;
     computerScore = 0;
     updateUI();
-    endModal.style.display = "none";
+    endModal.classList.toggle("visible");
+    toggleBackdrop();
 }
 
 function getComputerChoice() {

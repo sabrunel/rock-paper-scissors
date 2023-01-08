@@ -5,7 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock Paper Scissors</title>
-    <script src="index.js" defer></script>
+    <script src="main.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
 </head>
 <body>
     <div id="backdrop"></div>
@@ -14,7 +19,6 @@
     </header>
     <main>
         <section class="score-board">
-            <h2 id="round-outcome-txt"></h2>
             <div class="score-container">
                 <div class="score-box">
                     <h3 id="player-score"> 0 </h3>
@@ -27,15 +31,16 @@
                     <p id="computer-selection"></p>
                 </div>
             </div>
+            <h2 id="round-outcome-txt"></h2>
         </section>
         <section class="controls">
             <button id="rock-btn"> ROCK </button>
             <button id="paper-btn">PAPER </button>
             <button id="scissors-btn"> SCISSORS </button>
         </section>
-        <section id="end-modal" class="modal" style="display:none">
+        <section id="end-modal" class="modal">
             <h2 id="game-outcome-txt"></h2>
-            <button id="reset">Reset game</button>
+            <button id="reset-btn">PLAY AGAIN</button>
         </section>
     </main>
 </body>
